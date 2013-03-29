@@ -2,7 +2,7 @@
 [![Dependency Status](https://gemnasium.com/deepak/easy_rails_money.png)](https://gemnasium.com/deepak/easy_rails_money)
 [![Code Climate](https://codeclimate.com/github/deepak/easy_rails_money.png)](https://codeclimate.com/github/deepak/easy_rails_money)
 
-Under Development. only the migration part is done now
+### Under Development. Only the migration part is done now
 
 # EasyRailsMoney
 

@@ -1,4 +1,5 @@
 *.gem
+!vendor/cache/*
 *.rbc
 .bundle
 .config
