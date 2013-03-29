@@ -19,7 +19,8 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "money",         "~> 5.1.1"
   gem.add_dependency "activesupport", "~> 3.2"
-  
+
+  gem.add_development_dependency "rake",         "~> 10.0.4"
   gem.add_development_dependency "rspec",        "~> 2.12"
   gem.add_development_dependency "activerecord", "~> 3.2"
   gem.add_development_dependency "sqlite3",      "~> 1.3.7"
