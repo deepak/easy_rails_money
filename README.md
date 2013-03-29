@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/deepak/easy_rails_money.png?branch=master)](https://travis-ci.org/deepak/easy_rails_money)
+[![Dependency Status](https://gemnasium.com/deepak/easy_rails_money.png)](https://gemnasium.com/deepak/easy_rails_money)
+[![Code Climate](https://codeclimate.com/github/deepak/easy_rails_money.png)](https://codeclimate.com/github/deepak/easy_rails_money)
+
 Under Development. only the migration part is done now
 
 # EasyRailsMoney
