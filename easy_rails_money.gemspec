@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = EasyRailsMoney::VERSION
   gem.authors       = ["Deepak Kannan"]
   gem.email         = ["kannan.deepak@gmail.com"]
-  gem.description   = %q{Integrate Rails's ActiveRecord gem and the money gem. Focus is on a simple code and API}
-  gem.summary       = %q{Integrate rails and the money gem}
+  gem.description   = "Integrate Rail's ActiveRecord gem and the money gem. Focus is on a simple code and API"
+  gem.summary       = "Integrate Rail's ActiveRecord gem and the money gem"
   gem.homepage      = "https://github.com/deepak/easy_rails_money"
 
   gem.files         = `git ls-files`.split($/)

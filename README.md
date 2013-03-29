@@ -60,7 +60,7 @@ Watch [Rubyconf 2011 Float-is-legacy](http://www.confreaks.com/videos/698-rubyco
 We have encoded the currency in the column name. I like it because
 there is no need to define another column and it is simple. But the
 disadvantage is that it is inflexible and changing the column name in
-Mysql might require downtime for a big table
+MySQL might require downtime for a big table
 
 So let us go with the first option. The disadvantage is that currency
 is stored as a string. Integer might be better for storing in the database
