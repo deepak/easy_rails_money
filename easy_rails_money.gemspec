@@ -25,4 +25,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "activerecord", "~> 3.2"
   gem.add_development_dependency "sqlite3",      "~> 1.3.7"
   gem.add_development_dependency "debugger",     "~> 1.5.0"
+  gem.add_development_dependency "simplecov",    "~> 0.7.1"
 end
