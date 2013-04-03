@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Configuration" do
 
-  describe "#default_currency=" do
+  describe "#default_currency" do
     let(:existing_currency) { Money::Currency.new(:usd) }
     let(:new_currency) { Money::Currency.new(:inr) }
 

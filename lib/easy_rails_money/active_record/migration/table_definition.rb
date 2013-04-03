@@ -18,6 +18,7 @@ module EasyRailsMoney
           end
         end
 
+        protected
         def remove_currency_columns
           columns.delete_if { |x| x.name =~ /_currency/ }
         end
