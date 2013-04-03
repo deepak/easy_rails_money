@@ -21,9 +21,19 @@ Gem::Specification.new do |gem|
   gem.add_dependency "activesupport", "~> 3.2"
 
   gem.add_development_dependency "rake",         "~> 10.0.4"
+
+  # for running tests
   gem.add_development_dependency "rspec",        "~> 2.12"
-  gem.add_development_dependency "activerecord", "~> 3.2"
+  # we use an in-memory sqlite database for speed
   gem.add_development_dependency "sqlite3",      "~> 1.3.7"
+  # testing against the ActiveRecord interface
+  gem.add_development_dependency "activerecord", "~> 3.2"
+  
   gem.add_development_dependency "debugger",     "~> 1.5.0"
   gem.add_development_dependency "simplecov",    "~> 0.7.1"
+
+  # for generating docs
+  gem.add_development_dependency "yard",         "~> 0.8.5.2"
+  # needed by YARD to read markdown files
+  gem.add_development_dependency "redcarpet",    "~> 2.2.2"
 end

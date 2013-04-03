@@ -2,6 +2,7 @@ require "money"
 require "easy_rails_money/version"
 require "easy_rails_money/configuration"
 
+# @author Deepak Kannan
 module EasyRailsMoney
   extend Configuration
 end
