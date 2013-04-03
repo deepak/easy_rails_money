@@ -2,9 +2,18 @@
 [![Dependency Status](https://gemnasium.com/deepak/easy_rails_money.png)](https://gemnasium.com/deepak/easy_rails_money)
 [![Code Climate](https://codeclimate.com/github/deepak/easy_rails_money.png)](https://codeclimate.com/github/deepak/easy_rails_money)
 
-### Under Development. Only the migration part is done now
+### Under Development
+
+The migration helpers are functionally complete.
+Working on integrating with Rails' ActiveModel
 
 # EasyRailsMoney
+
+> “Young people, nowadays, imagine that money is everything.
+> 
+> Yes, murmured Lord Henry, settling his button-hole in his coat; 
+> and when they grow older they know it.”  
+> ― Oscar Wilde, The Picture of Dorian Gray and Other Writings
 
 This library provides integration of [money](http://github.com/Rubymoney/money) gem with [Rails](https://github.com/rails/rails).
 
@@ -248,11 +257,13 @@ money and currency columns defined.
 Right now, none of these choices are customizable.
 
 ## TODO's
-1. currency is stored as a string. Integer might be better for storing in the database
-2. store a snapshot of the exchange rate as well when the record was
+1. Proof-read docs
+2. currency is stored as a string. Integer might be better for storing in the database
+3. store a snapshot of the exchange rate as well when the record was
    inserted or if we want to "freeze" the exchange rate per-record
-3. specs for migration test the same thing in multiple ways. have a
+4. specs for migration test the same thing in multiple ways. have a
    spec helper
-4. add Gemfil to test on ActiveRecord 4.x ie. with Rails4 . Add to travis.yml as well
-5. configure the ```_money``` and ```_currency``` prefix and the name
+5. add Gemfil to test on ActiveRecord 4.x ie. with Rails4 . Add to travis.yml as well
+6. configure the ```_money``` and ```_currency``` prefix and the name
    of the common ```currency``` column
+7. check specs tagged as "fixme"
