@@ -395,5 +395,6 @@ EOF
       expect { migrate ChangeTable::AddPrincipalToLoan }.to change { dump_schema }.from(schema_with_only_name).to(schema_with_principal)
     end
 
+    pending "separate up and down migration methods. using add_money and remove_money"
   end # describe "Migrating Money columns"
 end # if defined? ActiveRecord
