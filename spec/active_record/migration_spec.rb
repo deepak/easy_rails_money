@@ -151,33 +151,6 @@ if defined? ActiveRecord
         end
       end
     end
-
-    class CreateLoanWithCurrency < ActiveRecord::Migration
-      def change
-        suppress_messages do
-          create_table :loans, force: true do |t|
-            t.string :name
-            t.money  :principal
-            t.money  :repaid
-            t.money  :npa
-            t.currency
-          end
-        end
-      end
-    end
-
-    class CreateLoanWithoutCurrency < ActiveRecord::Migration
-      def change
-        suppress_messages do
-          create_table :loans, force: true do |t|
-            t.string :name
-            t.money  :principal
-            t.money  :repaid
-            t.money  :npa
-          end
-        end
-      end
-    end
     
     class CreateLoanWithCurrencySpecifiedFirst < ActiveRecord::Migration
       def change
@@ -207,12 +180,7 @@ if defined? ActiveRecord
       end
     end
   end # module CreateTableDefinition
-  
-  # class Loan < ActiveRecord::Base   
-  #   attr_accessible :principal, :name
-  #   # money :principal
-  # end
-  
+
   describe "Migrating Money columns" do
 
     let(:schema_with_principal) do
@@ -280,7 +248,7 @@ EOF
             expect(dump_schema).to eq schema_with_principal
           end
         end
-      
+
         describe "#remove_money" do
           it "drops two columns for each money attribute. one which stored the lower denomination as an integer and the currency as a string" do
             expect { migrate SchemaStatements::RemovePrincipalFromLoan }.to change { dump_schema }.from(schema_with_principal).to(schema_with_only_name)
@@ -382,7 +350,7 @@ EOF
             expect { migrate ChangeTable::RemoveCurrencyFromLoan }.to change { dump_schema }.from(schema_with_single_currency_column).to(schema_with_multiple_currency_columns)
           end
         end
-          
+
         it "can add a single currrency column later" do
           migrate CreateTableDefinition::CreateLoanWithoutCurrency
           expect { migrate ChangeTable::AddSingleCurrencyToLoan }.to change { dump_schema }.from(schema_with_multiple_currency_columns).to(schema_with_single_currency_column)

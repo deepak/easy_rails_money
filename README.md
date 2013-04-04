@@ -267,3 +267,8 @@ Right now, none of these choices are customizable.
 6. configure the ```_money``` and ```_currency``` prefix and the name
    of the common ```currency``` column
 7. check specs tagged as "fixme"
+8. cryptographically sign gem
+9. test if Memoization in ```MoneyDsl#money`` will make any difference
+   and add a performance test to catch regressions
+10. The accessors right now expect a Money object or nil. code and DSL to
+    convert String to a currency object. how to specify currency then ?

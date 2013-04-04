@@ -1,3 +1,32 @@
+module CreateTableDefinition
+  class CreateLoanWithCurrency < ActiveRecord::Migration
+    def change
+      suppress_messages do
+        create_table :loans, force: true do |t|
+          t.string :name
+          t.money  :principal
+          t.money  :repaid
+          t.money  :npa
+          t.currency
+        end
+      end
+    end
+  end
+
+  class CreateLoanWithoutCurrency < ActiveRecord::Migration
+    def change
+      suppress_messages do
+        create_table :loans, force: true do |t|
+          t.string :name
+          t.money  :principal
+          t.money  :repaid
+          t.money  :npa
+        end
+      end
+    end
+  end
+end
+
 class String
   def strip_spaces
     strip.gsub(/\s+/, ' ')

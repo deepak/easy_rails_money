@@ -14,7 +14,7 @@
 - has a dependency on ActiveRecord and removed the dependency on Rails
 
 ## 0.0.3
-- add missing cases for supporting a single currency
+- add missing test-cases for supporting a single currency
 - refactor tests
 - add simplecov coverage report
 - Add yard docs and update README
