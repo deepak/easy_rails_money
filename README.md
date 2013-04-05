@@ -69,7 +69,7 @@ Option 1:
 class CreateLoan < ActiveRecord::Migration
   def change
     create_table :loans do |t|
-      t.integer       :principal
+      t.integer       :principal_money
       t.string        :principal_currency
     end
   end
@@ -101,8 +101,8 @@ Floating-Point Arithmetic, by David Goldberg, published in March,
 
 We have encoded the currency in the column name. I like it because
 there is no need to define another column and it is simple. But the
-disadvantage is that it is inflexible and changing the column name in
-MySQL might require downtime for a big table
+disadvantage is that it is inflexible ie. cannot store two currencies
+and changing the column name in MySQL might require downtime for a big table
 
 So let us go with the first option. The disadvantage is that currency
 is stored as a string. Integer might be better for storing in the database
@@ -121,11 +121,11 @@ Now we would represent it as
 class CreateLoan < ActiveRecord::Migration
   def change
     create_table :loans do |t|
-      t.integer       :principal
+      t.integer       :principal_money
       t.string        :principal_currency
-      t.integer       :repaid
+      t.integer       :repaid_money
       t.string        :repaid_currency
-      t.integer       :npa
+      t.integer       :npa_money
       t.string        :npa_currency
     end
   end
@@ -141,9 +141,9 @@ class CreateLoan < ActiveRecord::Migration
   def change
     create_table :loans do |t|
       t.string        :currency
-      t.integer       :principal
-      t.integer       :repaid
-      t.integer       :npa
+      t.integer       :principal_money
+      t.integer       :repaid_money
+      t.integer       :npa_money
     end
   end
 end

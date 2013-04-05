@@ -32,6 +32,13 @@ describe "Configuration" do
           from(existing_currency).
           to(new_currency)
       end
+
+      it "reads back a currency object even when a symbol is set" do
+        expect { EasyRailsMoney.default_currency = new_currency.id }.
+          to change { EasyRailsMoney.default_currency }.
+          from(existing_currency).
+          to(new_currency)
+      end
     end
   end
   
