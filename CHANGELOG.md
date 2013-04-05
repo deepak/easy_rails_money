@@ -19,4 +19,5 @@
 - add simplecov coverage report
 - Add yard docs and update README
 
-
+## 0.0.4
+- add dsl with_currency for defining a single currency on the model
