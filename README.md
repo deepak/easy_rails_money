@@ -2,11 +2,6 @@
 [![Dependency Status](https://gemnasium.com/deepak/easy_rails_money.png)](https://gemnasium.com/deepak/easy_rails_money)
 [![Code Climate](https://codeclimate.com/github/deepak/easy_rails_money.png)](https://codeclimate.com/github/deepak/easy_rails_money)
 
-### Under Development
-
-The migration helpers are functionally complete.
-Working on integrating with Rails' ActiveModel
-
 # EasyRailsMoney
 
 > “Young people, nowadays, imagine that money is everything.
@@ -17,13 +12,11 @@ Working on integrating with Rails' ActiveModel
 
 This library provides integration of [money](http://github.com/Rubymoney/money) gem with [Rails](https://github.com/rails/rails).
 
-[money-rails](https://github.com/RubyMoney/money-rails) is much more
-popular and full-featured. Definately try it out. I have actually
-submitted a PR to that project and it is actively maintained.
+It provides migration helpers to define a schema with either a single  
+currency column or a currency column per-money object.  
 
-I have tried to create a simpler version of [money-rails](https://github.com/RubyMoney/money-rails)
-With a better API and database schema, in my opinion
-I created this project to scratch my itch.
+It also provides a ActiveRecord DSL to define that an attribute is a
+Money object and that it has a default currency   
 
 Please open a new issue [in the github project issues tracker](http://github.com/deepak/easy_rails_money/issues). You are also
 more than welcome to contribute to the project :-)  
@@ -32,6 +25,14 @@ more than welcome to contribute to the project :-)
 
 Have stolen lots of code from [money-rails](https://github.com/RubyMoney/money-rails)  
 But database schema, API and tests are written from scratch  
+
+[money-rails](https://github.com/RubyMoney/money-rails) is much more
+popular and full-featured. Definately try it out. I have actually
+submitted a PR to that project and it is actively maintained.
+
+I have tried to create a simpler version of [money-rails](https://github.com/RubyMoney/money-rails)
+With a better API and database schema, in my opinion.  
+I created this project to scratch my itch.
 
 ## Installation
 
@@ -151,6 +152,10 @@ end
 
 It might be possible that we set a currency once for the whole app and
 never change it. But this seems like a nice tradeoff api-wise
+
+Also the column names are suffixed with ```_money``` and ```_currency```   
+We need this for now, to reflect on the database scheme. I
+Ideally should be able to read the metadata from rails scheme cache.  
 
 ## Usage
 
@@ -352,6 +357,7 @@ loan_usd.currency # equals Money::Currency.new(:usd)
 8. cryptographically sign gem
 9. test if Memoization in ```MoneyDsl#money`` will make any difference
    and add a performance test to catch regressions
-10. The accessors right now expect a Money object or nil. code and DSL to
-    convert String to a currency object. how to specify currency then ?
-11. will it make sense to define the ```money``` dsl on ```ActiveModel```
+10. will it make sense to define the ```money``` dsl on ```ActiveModel``` ?
+11. the column names are suffixed with ```_money``` and ```_currency```  
+    We need this for now, to reflect on the database scheme. 
+    Ideally should be able to read the metadata from rails scheme cache.  
