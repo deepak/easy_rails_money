@@ -256,6 +256,88 @@ It is used to reflect on the database schema ie. to find out the
 money and currency columns defined.  
 Right now, none of these choices are customizable.
 
+#### Defining the Model
+
+If every money column has its own currency column, then we cn define  
+the model as:
+
+```ruby
+class Loan < ActiveRecord::Base
+  attr_accessible :name
+  money :principal
+  money :repaid
+  money :npa
+end
+```
+
+The corresponding migration (given above) is:
+
+```ruby
+class CreateLoanWithCurrency < ActiveRecord::Migration
+  def change
+    create_table :loans, force: true do |t|
+      t.string :name
+      t.money  :principal
+      t.money  :repaid
+      t.money  :npa
+    end
+  end
+end
+```
+
+Now if you want a single currency column then:
+
+```ruby
+class Loan < ActiveRecord::Base
+  attr_accessible :name
+
+  with_currency(:inr) do
+    money :principal
+    money :repaid
+    money :npa
+  end
+end
+```
+
+The corresponding migration (given above) is:
+
+```ruby
+class CreateLoanWithCurrency < ActiveRecord::Migration
+  def change
+    create_table :loans, force: true do |t|
+      t.string :name
+      t.money  :principal
+      t.money  :repaid
+      t.money  :npa
+      t.currency
+    end
+  end
+end
+```
+
+For such a record, where the single currency is defined. calling
+currency on a new record will give us the currency. And can define a
+common currency per-record while creating it
+
+eg:  
+```ruby
+class Loan < ActiveRecord::Base
+  attr_accessible :name
+
+  with_currency(:inr) do
+    money :principal
+    money :repaid
+    money :npa
+  end
+end
+
+loan = Loan.new
+loan.currency # equals Money::Currency.new(:inr)
+
+loan_usd = Loan.new(currency: :usd)
+loan_usd.currency # equals Money::Currency.new(:usd)
+```
+
 ## TODO's
 1. Proof-read docs
 2. currency is stored as a string. Integer might be better for storing in the database
@@ -272,3 +354,4 @@ Right now, none of these choices are customizable.
    and add a performance test to catch regressions
 10. The accessors right now expect a Money object or nil. code and DSL to
     convert String to a currency object. how to specify currency then ?
+11. will it make sense to define the ```money``` dsl on ```ActiveModel```

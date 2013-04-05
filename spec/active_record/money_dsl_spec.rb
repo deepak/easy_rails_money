@@ -1,13 +1,11 @@
 require 'spec_helper'
 require 'active_record_spec_helper'
 
-class Loan < ActiveRecord::Base
-  attr_accessible :name
-  money :principal
-end
-
 describe "Money DSL" do
-  subject { Loan.new }
+  subject {
+    require 'loan_model_spec_helper'
+    Loan.new
+  }
 
   before(:all) do
     currencies = [:inr, # Indian rupee
@@ -57,8 +55,13 @@ describe "Money DSL" do
         end
 
         it "throws an error if we try to set anything other than a Money object or nil" do
-          expect { subject.principal = 100 }.to raise_error(ArgumentError)
           expect { subject.principal = nil }.to_not raise_error
+          expect { subject.principal = Money.new(100) }.to_not raise_error
+          expect { subject.principal = Money.new(100, :usd) }.to_not raise_error
+          
+          expect { subject.principal = "100" }.to raise_error(ArgumentError)
+          expect { subject.principal = 100.10 }.to raise_error(ArgumentError)
+          expect { subject.principal = 100 }.to raise_error(ArgumentError)
         end
 
         it "returns the same value which is set" do
@@ -84,10 +87,110 @@ describe "Money DSL" do
               to(100)
           end
 
+          it "sets the money column when nil" do
+            subject.principal = nil
+            expect(subject.principal_money).to eq nil
+          end
+
           it "sets the currency column" do
             expect { subject.principal = Money.new(100, :inr) }.to change { subject.principal_currency }.
               from(nil).
               to("inr")
+          end
+
+          it "sets the currency column when nil" do
+            subject.principal = nil
+            expect(subject.principal_currency).to eq nil
+          end
+        end
+
+        context "when nil is set" do
+          it "can set to nil" do
+            subject.principal = nil
+            expect(subject.principal).to eq nil
+          end
+        end
+
+        it "cannot set an integer value" do
+          expect { subject.principal = 100 }.to raise_error
+        end
+      end # describe "#setter="
+    end # context "individual currency columns"
+
+    context "single currency", :single_currency do
+      subject {
+        require 'loan_with_currency_model_spec_helper'
+        LoanWithCurrency.new
+      }
+
+      before(:each) do
+        migrate CreateTableDefinition::CreateLoanWithCurrency
+      end
+
+      it "sets currency column" do
+        expect(subject.currency).to eq ::Money::Currency.new(:inr)
+      end
+
+      it "can change single currency on an instance" do
+        loan = LoanWithCurrency.new(currency: :usd)
+        expect(loan.currency).to eq ::Money::Currency.new(:usd)
+        expect(loan.class.single_currency).to eq ::Money::Currency.new(:inr)
+      end
+
+      describe "#getter" do
+        it "defines a getter" do
+          expect(subject).to respond_to(:principal)
+        end
+
+        it "getter returns nil if nothing is set" do
+          expect(subject.principal).to eq nil
+          expect(subject.principal).to_not eq Money.new(0)
+        end
+
+        it "gets the same value as set" do
+          money = Money.new(100, "INR")
+          expect { subject.principal = 100 }.to change { subject.principal }.
+            from(nil).
+            to(money)
+        end
+      end # describe "#getter"
+
+      describe "#setter=" do
+        it "defines a setter" do
+          expect(subject).to respond_to(:principal=).with(1).argument
+        end
+        
+        it "throws an error if we try to set anything other than a Integer object or nil" do
+          expect { subject.principal = nil }.to_not raise_error
+          expect { subject.principal = 100 }.to_not raise_error
+          
+          expect { subject.principal = Money.new(100, "INR") }.to raise_error
+          expect { subject.principal = "100" }.to raise_error(ArgumentError)
+          expect { subject.principal = 100.10 }.to raise_error(ArgumentError)
+        end
+
+        it "returns the same value which is set" do
+          expect(subject.principal = 100).to eq 100
+        end
+
+        context "actually sets the lower-level database columns" do
+          it "sets the money column" do
+            expect { subject.principal = 100 }.to change { subject.principal_money }.
+              from(nil).
+              to(100)
+          end
+
+          it "sets the money column when nil" do
+            subject.principal = nil
+            expect(subject.principal_money).to eq nil
+          end
+
+          it "does not set the currency column as it is a common column" do
+            expect { subject.principal = 100 }.not_to change { subject.currency }
+          end
+
+          it "does not set the currency column when nil as it is a common column" do
+            expect { subject.principal = nil }.not_to change { subject.currency }
           end
         end
 
@@ -98,18 +201,13 @@ describe "Money DSL" do
           end
         end
       end # describe "#setter="
-    end # context "individual currency columns"
-
-    context "single currency" do
-      before(:each) do
-        migrate CreateTableDefinition::CreateLoanWithCurrency
-      end
-
-      pending
-    end
+      
+    end # context "single currency"
 
     pending "validations"
-    pending "support multiple fields at once"
-
+    pending "support defining multiple fields at once"
+    pending "test the return value of #money. pretty useless though"
+    pending "patch create and attributes like #new"
+    
   end # describe "#money"
 end
