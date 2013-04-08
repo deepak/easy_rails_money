@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/extract_options'
+
 module EasyRailsMoney
   module ActiveRecord
     module Migration
@@ -22,10 +24,11 @@ module EasyRailsMoney
         # @see EasyRailsMoney::ActiveRecord::Migration::Table#money
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#currency
         # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_money
-        def add_money table_name, *column_names
-          column_names.each do |name|
-            add_column table_name, "#{name}_money",    :integer
-            add_column table_name, "#{name}_currency", :string unless has_currency_column?(table_name)
+        def add_money table_name, *args
+          options = args.extract_options!
+          Array(args).each do |name|
+            add_column table_name, "#{name}_money",    :integer, options
+            add_column table_name, "#{name}_currency", :string,  options unless has_currency_column?(table_name)
           end
         end
 
@@ -44,12 +47,13 @@ module EasyRailsMoney
         # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#add_money
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#currency
         # @note multiple remove_money calls are not supported in one migration. because at this point the schema is different from the migration defined
-        def remove_money table_name, *column_names
-          column_names.each do |name|
+        def remove_money table_name, *args
+          options = args.extract_options!
+          Array(args).each do |name|
             remove_column table_name, "#{name}_money"
             remove_column table_name, "#{name}_currency"
           end
-          remove_currency table_name unless has_money_columns?(table_name)
+          remove_currency table_name, options unless has_money_columns?(table_name)
         end
 
         # Removes the common currency column
@@ -64,14 +68,15 @@ module EasyRailsMoney
         # column is prefixed by '_money' and the currency column by '_currency'
         #
         # @param table_name [Symbol|String]
+        # @param options [Hash] optional
         #
         # @see EasyRailsMoney::ActiveRecord::Migration::Table#remove_currency
         # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_money
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#currency
-        def remove_currency table_name
+        def remove_currency table_name, options={}
           remove_column table_name, :currency
           money_columns(table_name) do |money_column|
-            add_column table_name, "#{money_column}_currency", :string
+            add_column table_name, "#{money_column}_currency", :string, options
           end
         end
 

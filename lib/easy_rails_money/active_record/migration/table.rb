@@ -24,10 +24,10 @@ module EasyRailsMoney
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#money
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#currency
         # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_money
-        def money(*column_names)
-          column_names.each do |name|
-            column "#{name}_money",    :integer
-            column "#{name}_currency", :string unless has_currency_column?
+        def money(column_names, options={})
+          Array(column_names).each do |name|
+            column "#{name}_money",    :integer, options
+            column "#{name}_currency", :string,  options unless has_currency_column?
           end
         end
 
@@ -60,9 +60,9 @@ module EasyRailsMoney
         #
         # Add a common currency column and remove the individual
         # currrency columns if they exist
-        def currency
+        def currency options = {}
           remove_currency_columns
-          column :currency, :string
+          column :currency, :string, options
         end
 
         # Removes the common currency column
