@@ -8,6 +8,15 @@ require 'active_record/schema_dumper'
 # whether it is implemented using
 # schema_statements, create_table or change_table
 module SchemaStatements
+  class CreateLoan < ActiveRecord::Migration
+    def change
+      suppress_messages do
+        create_table :loans
+        add_column   :loans, :name, :string
+      end
+    end
+  end
+  
   class CreateLoanAndMoney < ActiveRecord::Migration
     def change
       suppress_messages do
@@ -31,6 +40,14 @@ module SchemaStatements
     end
   end
 
+  class AddConstraints  < ActiveRecord::Migration
+    def change
+      suppress_messages do
+        add_money :loans, :principal, { null: false }
+      end
+    end
+  end
+  
   class RemoveMoneyColumnsFromLoan  < ActiveRecord::Migration
     def change
       suppress_messages do
@@ -70,6 +87,17 @@ module ChangeTable
       suppress_messages do
         change_table :loans do |t|
           t.money :principal
+        end
+      end
+    end
+  end
+
+  class AddPrincipalToLoanWithConstraint < ActiveRecord::Migration
+    def change
+      suppress_messages do
+        change_table :loans do |t|
+          t.currency :null => false
+          t.money :principal, :null => false
         end
       end
     end
@@ -256,6 +284,13 @@ EOF
   end
   
   context "and testing schema statements", :schema_statements do
+    describe "#add_money" do
+      it "can create a schema with not-null constraints on columns", :constraint, :failing do
+        migrate SchemaStatements::CreateLoan
+        expect { migrate SchemaStatements::AddConstraints }.to change { dump_schema }.from(schema_with_principal).to(schema_with_constraint)
+      end
+    end
+    
     context "which have one currency column for each money column" do
       before(:each) do
         migrate SchemaStatements::CreateLoanAndMoney
@@ -386,6 +421,11 @@ EOF
   it "can add a money column later" do
     migrate CreateTableDefinition::CreateLoan
     expect { migrate ChangeTable::AddPrincipalToLoan }.to change { dump_schema }.from(schema_with_only_name).to(schema_with_principal)
+  end
+
+  it "can add a money column with constraints later", :constraint, :failing do
+    migrate CreateTableDefinition::CreateLoan
+    expect { migrate ChangeTable::AddPrincipalToLoanWithConstraint }.to change { dump_schema }.from(schema_with_only_name).to(schema_with_constraint)
   end
 
   pending "separate up and down migration methods. using add_money and remove_money"
