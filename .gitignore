@@ -19,6 +19,10 @@ _yardoc
 doc/
 rdoc
 
+# temporary emacs files
+\#*
+\.\#*
+
 .rvmrc
 .ruby-version
 .ruby-gemset

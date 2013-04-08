@@ -10,7 +10,17 @@ module EasyRailsMoney
         attr_accessor :single_currency
 
         def single_currency?
+          # if we define a ActiveRecord object with a money column
+          # "before" the table is defined. Then it will throw an error
+          # and we will assume that a single currency is defined
+          # So always restart the app after the migrations are run
           self.columns_hash.has_key? "currency"
+        rescue ::ActiveRecord::StatementInvalid => err
+          if err.message =~ /Could not find table/
+            return true
+          else
+            raise
+          end
         end
         
         def with_currency currency, &block

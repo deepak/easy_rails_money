@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'active_record_spec_helper'
-require 'tempfile'
 require 'active_record/schema_dumper'
 
 # migrations used in tests. our factories/fixtures
@@ -233,7 +232,7 @@ EOF
   end
 EOF
   end
-
+  
   context "and testing schema statements", :schema_statements do
     context "which have one currency column for each money column" do
       before(:each) do

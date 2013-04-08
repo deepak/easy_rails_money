@@ -361,3 +361,10 @@ loan_usd.currency # equals Money::Currency.new(:usd)
 11. the column names are suffixed with ```_money``` and ```_currency```  
     We need this for now, to reflect on the database scheme. 
     Ideally should be able to read the metadata from rails scheme cache.  
+12. see spec tagged with `migration`.  
+    if we define a ActiveRecord object with a money column  
+    "before" the table is defined. Then it will throw  
+    an error and we will assume that a single  
+    currency is defined. So always restart the app after the  
+    migrations are run.  
+    Any better way ?  

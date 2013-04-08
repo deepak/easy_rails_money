@@ -26,6 +26,22 @@ describe "Money DSL" do
   describe "#money" do
     # validations
 
+    # the #money dsl queries the database schema to find out if a
+    # single-currency column is defined. or does every money column
+    # have its own currency column. If no table exists we assume that
+    # a single currency column exists (so that no error is thrown).
+    # for this to work, the app has to be reloaded after the migration
+    # is run
+    it "does not throw an error if a model is defined without the table being created ie. before the migration runs", :fixme, :migration do
+      expect(dump_schema).to be_blank
+      expect {
+        class Loan < ActiveRecord::Base
+          attr_accessible :name
+          money :principal
+        end
+      }.to_not raise_error
+    end
+    
     context "individual currency columns" do
       before(:each) do
         migrate CreateTableDefinition::CreateLoanWithoutCurrency

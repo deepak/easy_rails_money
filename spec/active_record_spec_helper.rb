@@ -1,3 +1,5 @@
+require 'tempfile'
+
 module CreateTableDefinition
   class CreateLoanWithCurrency < ActiveRecord::Migration
     def change
