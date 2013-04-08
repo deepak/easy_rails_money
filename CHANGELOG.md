@@ -21,3 +21,12 @@
 
 ## 0.0.4
 - add dsl with_currency for defining a single currency on the model
+
+## 0.0.5
+- bugfix: defining a model before the table is created throws an error  
+  see spec tagged with `migration`.  
+  if we define a ActiveRecord object with a money column  
+  "before" the table is defined. Then it will throw  
+  an error and we will assume that a single  
+  currency is defined. So always restart the app after the  
+  migrations are run.  
