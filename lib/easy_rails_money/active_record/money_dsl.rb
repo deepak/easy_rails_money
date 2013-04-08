@@ -15,8 +15,12 @@ module EasyRailsMoney
           # and we will assume that a single currency is defined
           # So always restart the app after the migrations are run
           self.columns_hash.has_key? "currency"
-        rescue ::ActiveRecord::StatementInvalid => err
-          if err.message =~ /Could not find table/
+        rescue Object => err
+          # leaky abstaction. database adapter is leaking through
+          # postgres with activerecord throws an error of type PG::Error and sqlite of ActiveRecord::StatementInvalid
+          # so we depend on the message, not the class. still need to test on other
+          # database adapters because the message is not exactly the same
+          if err.message =~ /Could not find table/ || err.message =~ /relation (.+) does not exist/
             return true
           else
             raise

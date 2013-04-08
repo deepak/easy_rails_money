@@ -368,3 +368,7 @@ loan_usd.currency # equals Money::Currency.new(:usd)
     currency is defined. So always restart the app after the  
     migrations are run.  
     Any better way ?  
+    Also the error handling EasyRailsMoney::ActiveRecord::MoneyDsl.single_currency?  
+    is dependent on the database adapter  
+    being used, which sucks. can test on other database adapters  
+    or handle a generic error  

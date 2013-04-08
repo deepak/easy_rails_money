@@ -30,3 +30,12 @@
   an error and we will assume that a single  
   currency is defined. So always restart the app after the  
   migrations are run.  
+
+## 0.0.6
+- bugfix: on a bugfix at v0.0.5
+  database adapter is leaking through. leaky abstaction
+  the error handling for  
+  EasyRailsMoney::ActiveRecord::MoneyDsl.single_currency?  
+  is dependent on the database adapter being used, which sucks. 
+  can test on other database adapters or handle a generic error
+
