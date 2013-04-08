@@ -38,4 +38,12 @@
   EasyRailsMoney::ActiveRecord::MoneyDsl.single_currency?  
   is dependent on the database adapter being used, which sucks. 
   can test on other database adapters or handle a generic error
+  
+## 0.0.7
+- money and currency column can take options
+  activerecord DSL for columns can take options for
+  not-null constraints and default. all options are
+  passed forward to activerecord
 
+  add_column and change_table do not work for now
+  with this syntax
