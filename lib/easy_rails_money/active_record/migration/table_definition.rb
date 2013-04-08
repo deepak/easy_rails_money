@@ -14,9 +14,9 @@ module EasyRailsMoney
         # @return is not important and can change
         #
         # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_currency
-        def currency
+        def currency options={}
           remove_currency_columns
-          column :currency, :string
+          column :currency, :string, options
         end
 
         # Creates one or two columns to represent a Money object in the named table
@@ -38,11 +38,11 @@ module EasyRailsMoney
         # @see EasyRailsMoney::ActiveRecord::Migration::Table#money
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#currency
         # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_money
-        def money(*column_names)
-          column_names.each do |name|
-            column "#{name}_money",      :integer
+        def money(column_names, options={})
+          Array(column_names).each do |name|
+            column "#{name}_money",      :integer, options
             unless columns.select { |x| x.name == "currency" }.any?
-              column "#{name}_currency", :string
+              column "#{name}_currency", :string,  options
             end
           end
         end

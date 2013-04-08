@@ -147,6 +147,18 @@ module CreateTableDefinition
       end
     end
   end
+
+  class CreateLoanWithConstraint < ActiveRecord::Migration
+    def change
+      suppress_messages do
+        create_table :loans, :force => true do |t|
+          t.string :name
+          t.currency           :null => false
+          t.money  :principal, :null => false
+        end
+      end
+    end
+  end
   
   class CreateLoanWithCurrencySpecifiedFirst < ActiveRecord::Migration
     def change
@@ -232,6 +244,16 @@ EOF
   end
 EOF
   end
+
+  let(:schema_with_constraint) do
+    <<-EOF.strip_spaces
+  create_table "loans", :force => true do |t|
+    t.string  "name"
+    t.integer "principal_money", :null => false
+    t.string  "currency", :null => false
+  end
+EOF
+  end
   
   context "and testing schema statements", :schema_statements do
     context "which have one currency column for each money column" do
@@ -286,12 +308,19 @@ EOF
   end # context "schema_statements"
 
   context "and testing table statements", :table_statements do
+
+    describe "#money" do
+      it "can create a schema with not-null constraints on columns", :constraint do
+        expect { migrate CreateTableDefinition::CreateLoanWithConstraint }.to change { dump_schema }.from("").to(schema_with_constraint)
+      end
+    end
+    
     context "which have one currency column for each money column" do
       before(:each) do
         migrate CreateTableDefinition::CreateLoanAndMoney
       end
       
-      describe "#add_money" do
+      describe "#money" do
         it "creates two columns for each money attribute. one to store the lower denomination as an integer and the currency as a string" do
           expect(dump_schema).to eq schema_with_principal
         end
@@ -305,7 +334,7 @@ EOF
     end
 
     context "which has a single currency", :single_currency do
-      describe "#add_money" do
+      describe "#money" do
         context "and tests that order of statements does not matter" do
           it "creates money and common currency cilumns when currency column is specified last" do
             migrate CreateTableDefinition::CreateLoanWithCurrency
