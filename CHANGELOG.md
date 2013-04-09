@@ -47,3 +47,13 @@
 
   add_column and change_table do not work for now
   with this syntax
+
+## 0.0.8
+- bugfix: single currency was being persisted as a yaml object
+- #currency and #some_column_currency are both assigned
+  and persisted as a downcase string
+  eg. "inr" in the case of Indian Rupee
+  so that, Money.default_currency.id == "inr".to_sym
+  holds true
+  api is changed. previously #currency and #single_currency
+  gave a Money::Currency object. now is is a String 
