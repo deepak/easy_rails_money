@@ -1,3 +1,4 @@
+require 'active_record/schema_dumper'
 require 'tempfile'
 
 module CreateTableDefinition

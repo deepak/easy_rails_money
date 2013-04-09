@@ -144,13 +144,13 @@ describe "Money DSL" do
       end
 
       it "sets currency column" do
-        expect(subject.currency).to eq ::Money::Currency.new(:inr)
+        expect(subject.currency).to eq "inr"
       end
 
       it "can change single currency on an instance" do
         loan = LoanWithCurrency.new(currency: :usd)
-        expect(loan.currency).to eq ::Money::Currency.new(:usd)
-        expect(loan.class.single_currency).to eq ::Money::Currency.new(:inr)
+        expect(loan.currency).to eq "usd"
+        expect(loan.class.single_currency).to eq "inr"
       end
 
       describe "#getter" do

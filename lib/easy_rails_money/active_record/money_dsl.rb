@@ -28,7 +28,7 @@ module EasyRailsMoney
         end
         
         def with_currency currency, &block
-          self.single_currency = EasyRailsMoney::MoneyDslHelper.to_currency(currency)
+          self.single_currency = EasyRailsMoney::MoneyDslHelper.to_currency(currency).id.to_s
           instance_eval &block
         end
 
@@ -37,7 +37,7 @@ module EasyRailsMoney
           # single currency is defined
           if single_currency?
             if attributes && attributes[:currency]
-              instance.currency = EasyRailsMoney::MoneyDslHelper.to_currency attributes[:currency]
+              instance.currency = EasyRailsMoney::MoneyDslHelper.to_currency(attributes[:currency]).id.to_s
             else
               instance.currency = instance.class.single_currency
             end
@@ -61,6 +61,14 @@ module EasyRailsMoney
                 nil
               end
             end
+
+            define_method "#{column_name}=" do |value|
+              raise ::ArgumentError.new("only Integer or nil accepted") unless (value.kind_of?(Integer) || value.is_a?(NilClass))
+              
+              send("#{money_column}=", value)
+              # currency is stored in a seperate common column
+              return Money.new(value, self.currency)
+            end # define_method setter
           else
             # TODO: test if Memoization will make any difference
             define_method column_name do |*args|
@@ -73,20 +81,10 @@ module EasyRailsMoney
                 nil
               end
             end
-          end
-
-          if single_currency?
-            define_method "#{column_name}=" do |value|
-              raise ::ArgumentError.new("only Integer or nil accepted") unless (value.kind_of?(Integer) || value.is_a?(NilClass))
-
-              send("#{money_column}=", value)
-              # currency is stored in a seperate common column
-              return Money.new(value, self.currency)
-            end # define_method setter
-          else
+            
             define_method "#{column_name}=" do |value|
               raise ::ArgumentError.new("only Money or nil accepted") unless (value.kind_of?(Money) || value.is_a?(NilClass))
-
+              
               if value
                 send("#{money_column}=", value.fractional)
                 # it is stored in the database as a string but the Money
@@ -100,7 +98,7 @@ module EasyRailsMoney
                 return nil
               end
             end # define_method setter
-          end # if single_currency?
+          end
         end # def money
       end # module ClassMethods
       

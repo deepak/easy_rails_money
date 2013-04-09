@@ -372,3 +372,8 @@ loan_usd.currency # equals Money::Currency.new(:usd)
     is dependent on the database adapter  
     being used, which sucks. can test on other database adapters  
     or handle a generic error  
+13. add typecast for currency column  
+    right now, it is always a string  
+    do we want a Money::Currency object back?  
+    not decided  
+    see currency_persistence_spec.rb
