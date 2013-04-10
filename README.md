@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/deepak/easy_rails_money.png?branch=master)](https://travis-ci.org/deepak/easy_rails_money)
 [![Dependency Status](https://gemnasium.com/deepak/easy_rails_money.png)](https://gemnasium.com/deepak/easy_rails_money)
 [![Code Climate](https://codeclimate.com/github/deepak/easy_rails_money.png)](https://codeclimate.com/github/deepak/easy_rails_money)
+[![Gem Version](https://badge.fury.io/rb/easy_rails_money.png)](http://badge.fury.io/rb/easy_rails_money)
 
 # EasyRailsMoney
 
@@ -377,3 +378,7 @@ loan_usd.currency # equals Money::Currency.new(:usd)
     do we want a Money::Currency object back?  
     not decided  
     see currency_persistence_spec.rb
+14. make sure re-opening and redefining money dsl methods work
+    eg. moving from individual currencies to single currency
+15. document. methods defined inside activerecord's scope
+    move to a helper, no that its namespace is not polluted

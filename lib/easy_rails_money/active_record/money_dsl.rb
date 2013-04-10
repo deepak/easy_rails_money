@@ -5,6 +5,12 @@ module EasyRailsMoney
   module ActiveRecord
     module MoneyDsl
       extend ActiveSupport::Concern
+
+      included do
+        def money_attributes
+          attributes.keys.select {|x| x =~ /^(.+)_money/ }.map {|x| x.split('_')[0..-2].join }
+        end
+      end
       
       module ClassMethods
         attr_accessor :single_currency
@@ -69,6 +75,15 @@ module EasyRailsMoney
               # currency is stored in a seperate common column
               return Money.new(value, self.currency)
             end # define_method setter
+
+            define_method "currency=" do |value|
+              if value.nil?
+                money_attributes.map do |name|
+                  send "#{name}=", nil
+                end
+              end
+              super value
+            end
           else
             # TODO: test if Memoization will make any difference
             define_method column_name do |*args|
