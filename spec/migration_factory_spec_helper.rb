@@ -22,7 +22,7 @@ module SchemaStatements
           t.string :name
           t.currency
         end
-        add_money :loans, :principal, :repaid, :npa
+        add_money :loans, :principal, :repaid, :amount_funded
       end
     end
   end
@@ -30,7 +30,7 @@ module SchemaStatements
   class RemoveMoneyColumnsFromLoan  < ActiveRecord::Migration
     def change
       suppress_messages do
-        remove_money :loans, :principal, :repaid, :npa
+        remove_money :loans, :principal, :repaid, :amount_funded
       end
     end
   end
@@ -38,7 +38,7 @@ module SchemaStatements
   class RemoveMoneyColumnsExceptPrincipalFromLoan < ActiveRecord::Migration
     def change
       suppress_messages do
-        remove_money :loans, :repaid, :npa
+        remove_money :loans, :repaid, :amount_funded
       end
     end
   end
@@ -105,7 +105,7 @@ module ChangeTable
     def change
       suppress_messages do
         change_table :loans, force: true do |t|
-          t.remove_money :principal, :repaid, :npa
+          t.remove_money :principal, :repaid, :amount_funded
         end
       end
     end
@@ -115,7 +115,7 @@ module ChangeTable
     def change
       suppress_messages do
         change_table :loans, force: true do |t|
-          t.remove_money :repaid, :npa
+          t.remove_money :repaid, :amount_funded
         end
       end
     end
@@ -164,7 +164,7 @@ module CreateTableDefinition
           t.currency
           t.money  :principal
           t.money  :repaid
-          t.money  :npa
+          t.money  :amount_funded
         end
       end
     end
@@ -178,7 +178,7 @@ module CreateTableDefinition
           t.money  :principal
           t.money  :repaid
           t.currency
-          t.money  :npa
+          t.money  :amount_funded
         end
       end
     end

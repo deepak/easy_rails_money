@@ -48,7 +48,7 @@ describe "Currency Persistence" do
       loan = loan_model.new
       loan.principal = 100.to_money(@currency)
       loan.repaid    = 50.to_money(@currency)
-      loan.npa       = 10.to_money(@currency)
+      loan.amount_funded = 10.to_money(@currency)
       loan
     }
 
@@ -80,7 +80,7 @@ describe "Currency Persistence" do
       loan.currency = @currency
       loan.principal = 100 * 100
       loan.repaid    = 50 * 100
-      loan.npa       = 10 * 100
+      loan.amount_funded = 10 * 100
       loan
     }
 

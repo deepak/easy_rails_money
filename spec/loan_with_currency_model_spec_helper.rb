@@ -5,6 +5,6 @@ class LoanWithCurrency < ActiveRecord::Base
   with_currency(:inr) do
     money :principal
     money :repaid
-    money :npa
+    money :amount_funded
   end
 end

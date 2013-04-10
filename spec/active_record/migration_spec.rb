@@ -36,7 +36,7 @@ EOF
     <<-EOF.strip_spaces
   create_table "loans", :force => true do |t|
     t.string  "name"
-    t.integer "npa_money"
+    t.integer "amount_funded_money"
     t.integer "principal_money"
     t.integer "repaid_money"
     t.string "currency"
@@ -48,8 +48,8 @@ EOF
     <<-EOF.strip_spaces
   create_table "loans", :force => true do |t|
     t.string  "name"
-    t.string  "npa_currency"
-    t.integer "npa_money"
+    t.string  "amount_funded_currency"
+    t.integer "amount_funded_money"
     t.string  "principal_currency"
     t.integer "principal_money"
     t.string  "repaid_currency"

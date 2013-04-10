@@ -18,21 +18,21 @@ describe "Validation" do
 
       EasyRailsMoney::MoneyValidator.any_instance.should_receive(:validate_each).with(subject, :principal, subject.principal)
       EasyRailsMoney::MoneyValidator.any_instance.should_receive(:validate_each).with(subject, :repaid, subject.repaid)
-      EasyRailsMoney::MoneyValidator.any_instance.should_receive(:validate_each).with(subject, :npa, subject.npa)
+      EasyRailsMoney::MoneyValidator.any_instance.should_receive(:validate_each).with(subject, :amount_funded, subject.amount_funded)
     end
 
     context "do not allow nil" do
       let(:subject) do
         model = loan_model
         model.instance_eval {
-          validates_money :principal, :repaid, :npa, :allow_nil => false, :allowed_currency => %w[inr usd sgd]
+          validates_money :principal, :repaid, :amount_funded, :allow_nil => false, :allowed_currency => %w[inr usd sgd]
         }
         
         loan = model.new
         loan.name = "loan having some values"
         loan.principal = 100 * 100
         loan.repaid    = 50 * 100
-        loan.npa       = 10 * 100
+        loan.amount_funded = 10 * 100
         loan
       end
 
@@ -54,8 +54,7 @@ describe "Validation" do
         expect(subject.attributes["currency"]).to be_nil
         add_expectations subject, false
         expect(subject).not_to be_valid
-        puts subject.errors.messages
-        expect(subject.errors.messages).to eq(:principal_money=>["is not a number"], :repaid_money=>["is not a number"], :npa_money=>["is not a number"], :currency=>["is not included in the list"])
+        expect(subject.errors.messages).to eq(:principal_money=>["is not a number"], :repaid_money=>["is not a number"], :amount_funded_money=>["is not a number"], :currency=>["is not included in the list"])
       end
     end # context "do not allow nil"
 
@@ -63,14 +62,14 @@ describe "Validation" do
       let(:subject) do
         model = loan_model
         model.instance_eval {
-          validates_money :principal, :repaid, :npa, :allow_nil => true, :allowed_currency => %w[inr usd sgd]
+          validates_money :principal, :repaid, :amount_funded, :allow_nil => true, :allowed_currency => %w[inr usd sgd]
         }
         
         loan = model.new
         loan.name = "loan having nil values"
         loan.principal = nil
         loan.repaid    = nil
-        loan.npa       = nil
+        loan.amount_funded = nil
         loan
       end
       

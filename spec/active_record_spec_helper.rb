@@ -9,7 +9,7 @@ module CreateTableDefinition
           t.string :name
           t.money  :principal
           t.money  :repaid
-          t.money  :npa
+          t.money  :amount_funded
           t.currency
         end
       end
@@ -23,7 +23,7 @@ module CreateTableDefinition
           t.string :name
           t.money  :principal
           t.money  :repaid
-          t.money  :npa
+          t.money  :amount_funded
         end
       end
     end
