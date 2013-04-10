@@ -8,7 +8,7 @@ module EasyRailsMoney
 
       included do
         def money_attributes
-          attributes.keys.select {|x| x =~ /^(.+)_money/ }.map {|x| x.split('_')[0..-2].join }
+          attributes.keys.select {|x| x =~ /^(.+)_money/ }.map {|x| x.split('_')[0..-2].join('_') }
         end
       end
       
