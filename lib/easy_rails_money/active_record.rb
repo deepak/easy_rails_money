@@ -21,8 +21,10 @@ class ActiveRecord::Base
       validates "#{column_name}_money", :numericality => { only_integer: true, greater_than_or_equal_to: 0 }, :allow_nil => options[:allow_nil] 
     end
 
-    allowed_currency = options[:allowed_currency] || Money::Currency.table.keys
+    allowed_currency = options[:allowed_currency] || EasyRailsMoney::MoneyValidator.currency_list
     if single_currency?
+      # TODO: a version of inclusion_in validator that can compare
+      # Symbol and string
       validates :currency, :inclusion => { in: allowed_currency }, :allow_nil => options[:allow_nil] 
     else
       args.each do |column_name|

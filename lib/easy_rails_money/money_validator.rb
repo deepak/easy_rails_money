@@ -7,6 +7,15 @@ module EasyRailsMoney
   # only allow_nil is passed around (as it was needed). test for other
   # like if and unless as well
   class MoneyValidator < ActiveModel::EachValidator
+
+    class << self
+      attr_writer :currency_list
+
+      def currency_list
+        @currency_list ||= Money::Currency.table.keys.map(&:to_s)
+      end
+    end
+    
     def validate_each(record, attribute, value)
       if options[:allow_nil]
         return if value.nil?

@@ -78,6 +78,11 @@ module EasyRailsMoney
 
             define_method "currency=" do |value|
               if value.nil?
+                # if we set currency (when it is a single currency)
+                # as nil. the other money columns are set to nil
+                # this is done because technically, Money has a default_currency
+                # so we can persist a Money object without the currency
+                # but that can change over time and we want to be explicit
                 money_attributes.map do |name|
                   send "#{name}=", nil
                 end

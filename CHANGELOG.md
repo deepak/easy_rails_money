@@ -57,3 +57,29 @@
   holds true
   api is changed. previously #currency and #single_currency
   gave a Money::Currency object. now is is a String 
+
+## 0.0.9.pre
+- add ActiveRecord::Base.validates_money  
+  it validates that currency is in an allowed list  
+  and money is stored as a number or can be nil  
+- api change: if we set currency (when it is a single currency)  
+  as nil. the other money columns are set to nil  
+  this is done because technically, Money has a default_currency  
+  so we can persist a Money object without the currency  
+  but that can change over time and we want to be explicit  
+  
+## 0.0.9.pre1
+- https://github.com/deepak/easy_rails_money/pull/1
+  when currency is set to nil, the money columns are set to nil as
+  well (see changelog for 0.0.9.pre above)
+  that code was buggy. so is a column was named "amount_funded"
+  it would give the setter as "amountfunded=" rather than
+  "amount_funded=". 
+  git sha1: c1d9f6a8160d5a075e78f625f177f6716715c637
+- bugfix: validates_money was failing if allowed_currency was not passed
+  the syntax is
+  validates_money :principal, :repaid, :amount_funded, :allow_nil => false, :allowed_currency => %w[inr usd sgd]
+  if we do not pass the last argument allowed_currency then it should
+  validate that it is a legal Money::Currency
+  that was not happenning because the Rails includes validations
+  does not compare Symbols and strings

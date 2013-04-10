@@ -383,3 +383,5 @@ loan_usd.currency # equals Money::Currency.new(:usd)
 15. document. methods defined inside activerecord's scope
     move to a helper, no that its namespace is not polluted
 16. two specs tagged with fixme in validates_money_spec failing
+17. a version of inclusion_in validator that can compare
+    Symbol and string

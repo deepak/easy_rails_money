@@ -89,6 +89,27 @@ describe "Validation" do
       end
     end # context "allow nil"
 
+    context "no allowed currency" do
+      let(:subject) do
+        model = loan_model
+        model.instance_eval {
+          validates_money :principal, :repaid, :amount_funded, :allow_nil => false
+        }
+        
+        loan = model.new
+        loan.name = "loan having some values and all currencies allowed"
+        loan.principal = 100 * 100
+        loan.repaid    = 50 * 100
+        loan.amount_funded = 10 * 100
+        loan
+      end
+
+      it "is valid when it is a Money object" do
+        add_expectations subject, false
+        expect(subject).to be_valid
+      end
+    end
+
     pending "check lower-level validations"
   end
 end
