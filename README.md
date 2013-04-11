@@ -57,6 +57,32 @@ Or install it yourself as:
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+## Why use the Money gem  
+
+In Ruby, Integer and Floats are native types  
+BigDecimal is like a wrapper over a string  
+
+Float is imprecise. storing Money as float will give us round-off  
+errors. i think will have problems comparing two floats as well  
+
+BigDecimal is precise and can handle arbitrary precision  
+but it is slower  
+
+Check https://gist.github.com/deepak/1275050 for a benchmark  
+
+So, to represent money we have:  
+- store as String  
+- store as decimal in database which Rails typecasts to BigDecimal  
+- store as integer. Which is what the Money gem does
+
+Money gem wraps:  
+- currency of a amount  
+- list of currency conversion rates  
+- actually convert one currency to another  
+
+flipkart.com has a version of the [flipkart-money](https://github.com/Flipkart/decimal-money) Money gem which uses BigDecimal  
+check the [Money](https://github.com/RubyMoney/money/blob/master/README.md) readme as well  
+
 ## Rationale
 
 Let us say you want to store a Rupee Money object in the database
@@ -385,3 +411,5 @@ loan_usd.currency # equals Money::Currency.new(:usd)
 16. two specs tagged with fixme in validates_money_spec failing
 17. a version of inclusion_in validator that can compare
     Symbol and string
+18. code parser to lint that multiple money statements are used   
+    without a with_currency statement. does cane (rubygem) have plugins?  
