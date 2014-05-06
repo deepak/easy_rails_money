@@ -83,7 +83,7 @@ module EasyRailsMoney
         protected
         def has_currency_column? table_name
           connection.schema_cache.clear_table_cache! table_name
-          connection.schema_cache.columns[table_name].select {|x| x.name == "currency" }.any?
+          connection.schema_cache.columns(table_name).select {|x| x.name == "currency" }.any?
         end
 
         def money_columns table_name
@@ -91,7 +91,7 @@ module EasyRailsMoney
           # fixme_need_to_clear_table_cache. for that test needed to
           # clear the cache
           connection.schema_cache.clear_table_cache! table_name
-          connection.schema_cache.columns[table_name].select { |col|
+          connection.schema_cache.columns(table_name).select { |col|
             col.name =~ /_money/
           }.map { |col|
             name = col.name.match(/(.+)_money/)[1]
