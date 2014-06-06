@@ -36,12 +36,11 @@ describe "Money DSL" do
       expect(dump_schema).to be_blank
       expect {
         class Loan < ActiveRecord::Base
-          attr_accessible :name
           money :principal
         end
       }.to_not raise_error
     end
-    
+
     context "individual currency columns" do
       before(:each) do
         migrate CreateTableDefinition::CreateLoanWithoutCurrency
@@ -74,7 +73,7 @@ describe "Money DSL" do
           expect { subject.principal = nil }.to_not raise_error
           expect { subject.principal = Money.new(100) }.to_not raise_error
           expect { subject.principal = Money.new(100, :usd) }.to_not raise_error
-          
+
           expect { subject.principal = "100" }.to raise_error(ArgumentError)
           expect { subject.principal = 100.10 }.to raise_error(ArgumentError)
           expect { subject.principal = 100 }.to raise_error(ArgumentError)
@@ -175,11 +174,11 @@ describe "Money DSL" do
         it "defines a setter" do
           expect(subject).to respond_to(:principal=).with(1).argument
         end
-        
+
         it "throws an error if we try to set anything other than a Integer object or nil" do
           expect { subject.principal = nil }.to_not raise_error
           expect { subject.principal = 100 }.to_not raise_error
-          
+
           expect { subject.principal = Money.new(100, "INR") }.to raise_error
           expect { subject.principal = "100" }.to raise_error(ArgumentError)
           expect { subject.principal = 100.10 }.to raise_error(ArgumentError)
@@ -217,13 +216,13 @@ describe "Money DSL" do
           end
         end
       end # describe "#setter="
-      
+
     end # context "single currency"
 
     pending "validations"
     pending "support defining multiple fields at once"
     pending "test the return value of #money. pretty useless though"
     pending "patch create and attributes like #new"
-    
+
   end # describe "#money"
 end

@@ -49,9 +49,10 @@ module EasyRailsMoney
 
         protected
         def remove_currency_columns
-          columns.delete_if { |x| x.name =~ /_currency/ }
+            columns.each do |x|
+                remove_column x.name if x.name =~ /_currency/
+            end
         end
-        
       end
     end
   end

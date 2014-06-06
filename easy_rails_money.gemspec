@@ -17,8 +17,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency "money",         "~> 5.1.1"
-  gem.add_dependency "activesupport", "~> 3.2"
+  gem.add_dependency "money",         "~> 6.1.0"
+  gem.add_dependency "activesupport", "~> 4.1"
 
   gem.add_development_dependency "rake",         "~> 10.0.4"
 
@@ -27,8 +27,8 @@ Gem::Specification.new do |gem|
   # we use an in-memory sqlite database for speed
   gem.add_development_dependency "sqlite3",      "~> 1.3.7"
   # testing against the ActiveRecord interface
-  gem.add_development_dependency "activerecord", "~> 3.2"
-  
+  gem.add_development_dependency "activerecord", "~> 4.1.0"
+
   gem.add_development_dependency "debugger",     "~> 1.5.0"
   gem.add_development_dependency "simplecov",    "~> 0.7.1"
 
