@@ -38,7 +38,7 @@ module EasyRailsMoney
           instance_eval &block
         end
 
-        def new(attributes = nil, options = {})
+        def new(*attributes, &block)
           instance = super
           # single currency is defined
           if single_currency?
