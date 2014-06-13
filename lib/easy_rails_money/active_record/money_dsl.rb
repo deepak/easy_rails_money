@@ -11,7 +11,7 @@ module EasyRailsMoney
           attributes.keys.select {|x| x =~ /^(.+)_money/ }.map {|x| x.split('_')[0..-2].join('_') }
         end
       end
-
+      
       module ClassMethods
         attr_accessor :single_currency
 
@@ -32,13 +32,13 @@ module EasyRailsMoney
             raise
           end
         end
-
+        
         def with_currency currency, &block
           self.single_currency = EasyRailsMoney::MoneyDslHelper.to_currency(currency).id.to_s
           instance_eval &block
         end
 
-        def new(attributes = nil)
+        def new(attributes = nil, options = {})
           instance = super
           # single currency is defined
           if single_currency?
@@ -55,12 +55,12 @@ module EasyRailsMoney
           money_column = "#{column_name}_money"
           currency_column = "#{column_name}_currency"
           single_currency_column = "currency"
-
+          
           if single_currency?
             define_method column_name do |*args|
               money = send(money_column)
               currency = send(single_currency_column)
-
+              
               if money
                 Money.new(money, currency)
               else
@@ -70,7 +70,7 @@ module EasyRailsMoney
 
             define_method "#{column_name}=" do |value|
               raise ::ArgumentError.new("only Integer or nil accepted") unless (value.kind_of?(Integer) || value.is_a?(NilClass))
-
+              
               send("#{money_column}=", value)
               # currency is stored in a seperate common column
               return Money.new(value, self.currency)
@@ -94,17 +94,17 @@ module EasyRailsMoney
             define_method column_name do |*args|
               money = send(money_column)
               currency = send(currency_column) || EasyRailsMoney.default_currency
-
+              
               if money
                 Money.new(money, currency)
               else
                 nil
               end
             end
-
+            
             define_method "#{column_name}=" do |value|
               raise ::ArgumentError.new("only Money or nil accepted") unless (value.kind_of?(Money) || value.is_a?(NilClass))
-
+              
               if value
                 send("#{money_column}=", value.fractional)
                 # it is stored in the database as a string but the Money
@@ -121,7 +121,7 @@ module EasyRailsMoney
           end
         end # def money
       end # module ClassMethods
-
+      
     end
   end
 end
