@@ -38,8 +38,9 @@ module EasyRailsMoney
           instance_eval &block
         end
 
-        def new(*attributes, &block)
+        def new(*args, &block)
           instance = super
+          attributes = args.first
           # single currency is defined
           if single_currency?
             if attributes && attributes[:currency]
