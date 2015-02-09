@@ -95,7 +95,7 @@ module EasyRailsMoney
 
         def columns
           # @base.schema_cache.clear_table_cache! @table_name
-          @base.schema_cache.columns(@table_name).map { |x| x.name }
+          @base.schema_cache.columns(@name).map { |x| x.name }
         end
 
         def has_currency_column?
