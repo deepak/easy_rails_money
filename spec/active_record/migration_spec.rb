@@ -6,7 +6,7 @@ describe "Migrating Money columns" do
 
   let(:schema_with_principal) do
     <<-EOF.strip_spaces
-  create_table "loans", force: true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
     t.integer "principal_money"
     t.string  "principal_currency"
@@ -16,7 +16,7 @@ EOF
 
   let(:schema_with_principal_and_single_currency_column) do
     <<-EOF.strip_spaces
-  create_table "loans", force: true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
     t.integer "principal_money"
     t.string  "currency"
@@ -26,7 +26,7 @@ EOF
 
   let(:schema_with_only_name) do
     <<-EOF.strip_spaces
-  create_table "loans", force: true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
   end
 EOF
@@ -34,7 +34,7 @@ EOF
 
   let(:schema_with_single_currency_column) do
     <<-EOF.strip_spaces
-  create_table "loans", force: true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
     t.integer "amount_funded_money"
     t.integer "principal_money"
@@ -46,7 +46,7 @@ EOF
 
   let(:schema_with_multiple_currency_columns) do
     <<-EOF.strip_spaces
-  create_table "loans", force: true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
     t.string  "amount_funded_currency"
     t.integer "amount_funded_money"
@@ -60,7 +60,7 @@ EOF
 
   let(:schema_with_constraint) do
     <<-EOF.strip_spaces
-  create_table "loans", force: true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
     t.integer "principal_money", null: false
     t.string  "currency", null: false
