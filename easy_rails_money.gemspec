@@ -29,7 +29,7 @@ Gem::Specification.new do |gem|
   # testing against the ActiveRecord interface
   gem.add_development_dependency "activerecord", "~> 4.2.0"
 
-  #gem.add_development_dependency "debugger",     "~> 1.5.0"
+  gem.add_development_dependency "pry-byebug"
   gem.add_development_dependency "simplecov",    "~> 0.7.1"
 
   # for generating docs
