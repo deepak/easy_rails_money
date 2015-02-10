@@ -7,9 +7,9 @@ module CreateTableDefinition
       suppress_messages do
         create_table :loans, force: true do |t|
           t.string :name
-          t.money  :principal
-          t.money  :repaid
-          t.money  :amount_funded
+          t.monetize  :principal
+          t.monetize  :repaid
+          t.monetize  :amount_funded
           t.currency
         end
       end
@@ -21,9 +21,9 @@ module CreateTableDefinition
       suppress_messages do
         create_table :loans, force: true do |t|
           t.string :name
-          t.money  :principal
-          t.money  :repaid
-          t.money  :amount_funded
+          t.monetize  :principal
+          t.monetize  :repaid
+          t.monetize  :amount_funded
         end
       end
     end

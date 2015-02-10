@@ -10,7 +10,7 @@ module SchemaStatements
         create_table :loans do |t|
           t.string :name
         end
-        add_money :loans, :principal
+        add_monetize :loans, :principal
       end
     end
   end
@@ -22,7 +22,7 @@ module SchemaStatements
           t.string :name
           t.currency
         end
-        add_money :loans, :principal, :repaid, :amount_funded
+        add_monetize :loans, :principal, :repaid, :amount_funded
       end
     end
   end
@@ -30,7 +30,7 @@ module SchemaStatements
   class RemoveMoneyColumnsFromLoan  < ActiveRecord::Migration
     def change
       suppress_messages do
-        remove_money :loans, :principal, :repaid, :amount_funded
+        remove_monetize :loans, :principal, :repaid, :amount_funded
       end
     end
   end
@@ -38,7 +38,7 @@ module SchemaStatements
   class RemoveMoneyColumnsExceptPrincipalFromLoan < ActiveRecord::Migration
     def change
       suppress_messages do
-        remove_money :loans, :repaid, :amount_funded
+        remove_monetize :loans, :repaid, :amount_funded
       end
     end
   end
@@ -46,7 +46,7 @@ module SchemaStatements
   class RemovePrincipalFromLoan < ActiveRecord::Migration
     def change
       suppress_messages do
-        remove_money :loans, :principal
+        remove_monetize :loans, :principal
       end
     end
   end
@@ -65,7 +65,7 @@ module ChangeTable
     def change
       suppress_messages do
         change_table :loans do |t|
-          t.money :principal
+          t.monetize :principal
         end
       end
     end
@@ -85,7 +85,7 @@ module ChangeTable
     def change
       suppress_messages do
         change_table :loans do |t|
-          t.remove_money :principal
+          t.remove_monetize :principal
         end
       end
     end
@@ -105,7 +105,7 @@ module ChangeTable
     def change
       suppress_messages do
         change_table :loans, force: true do |t|
-          t.remove_money :principal, :repaid, :amount_funded
+          t.remove_monetize :principal, :repaid, :amount_funded
         end
       end
     end
@@ -115,7 +115,7 @@ module ChangeTable
     def change
       suppress_messages do
         change_table :loans, force: true do |t|
-          t.remove_money :repaid, :amount_funded
+          t.remove_monetize :repaid, :amount_funded
         end
       end
     end
@@ -138,7 +138,7 @@ module CreateTableDefinition
       suppress_messages do
         create_table :loans do |t|
           t.string :name
-          t.money  :principal
+          t.monetize  :principal
         end
       end
     end
@@ -150,7 +150,7 @@ module CreateTableDefinition
         create_table :loans, :force => true do |t|
           t.string :name
           t.currency           :null => false
-          t.money  :principal, :null => false
+          t.monetize  :principal, :null => false
         end
       end
     end
@@ -162,9 +162,9 @@ module CreateTableDefinition
         create_table :loans, force: true do |t|
           t.string :name
           t.currency
-          t.money  :principal
-          t.money  :repaid
-          t.money  :amount_funded
+          t.monetize  :principal
+          t.monetize  :repaid
+          t.monetize  :amount_funded
         end
       end
     end
@@ -175,10 +175,10 @@ module CreateTableDefinition
       suppress_messages do
         create_table :loans, force: true do |t|
           t.string :name
-          t.money  :principal
-          t.money  :repaid
+          t.monetize  :principal
+          t.monetize  :repaid
           t.currency
-          t.money  :amount_funded
+          t.monetize  :amount_funded
         end
       end
     end

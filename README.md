@@ -200,9 +200,9 @@ class CreateLoanWithCurrency < ActiveRecord::Migration
   def change
     create_table :loans, force: true do |t|
       t.string :name
-      t.money  :principal
-      t.money  :repaid
-      t.money  :npa
+      t.monetize  :principal
+      t.monetize  :repaid
+      t.monetize  :npa
       t.currency
     end
   end
@@ -216,36 +216,36 @@ again use the ```money``` migration helper
 class AddPrincipalToLoan < ActiveRecord::Migration
   def change
     change_table :loans do |t|
-      t.money :principal
+      t.monetize :principal
     end
   end
 end
 ```
 
-Another option is to use ```add_money``` migration helper
+Another option is to use ```add_monetize``` migration helper
 It is a different DSL style, similar to ```create_table```
 
 ```ruby
 class AddPrincipalToLoan < ActiveRecord::Migration
   def up
-    add_money :loans, :principal, :repaid, :npa
+    add_monetize :loans, :principal, :repaid, :npa
   end
 
   def down
-    remove_money :loans, :principal, :repaid, :npa
+    remove_monetize :loans, :principal, :repaid, :npa
   end
 end
 ```
 
-```add_money``` helper is revertable, so you may use it inside ```change``` migrations.
+```add_monetize``` helper is revertable, so you may use it inside ```change``` migrations.
 If you writing separate ```up``` and ```down``` methods, you may use
-the ```remove_money``` migration helper.
+the ```remove_monetize``` migration helper.
 
-The above statements for ```money``` and ```add_money``` will create
+The above statements for ```money``` and ```add_monetize``` will create
 two columns. An integer column to store the lower denomination as an
 integer and a string column to store the currency name. 
 
-eg. if we say ```add_money :loans, :principal``` Then the following two
+eg. if we say ```add_monetize :loans, :principal``` Then the following two
 columns will be created:
 1. integer column called ```principal_money```
 2. string column called ```principal_currency```
@@ -265,9 +265,9 @@ class CreateLoanWithCurrency < ActiveRecord::Migration
   def change
     create_table :loans, force: true do |t|
       t.string :name
-      t.money  :principal
-      t.money  :repaid
-      t.money  :npa
+      t.monetize  :principal
+      t.monetize  :repaid
+      t.monetize  :npa
       t.currency
     end
   end
@@ -309,9 +309,9 @@ class CreateLoanWithCurrency < ActiveRecord::Migration
   def change
     create_table :loans, force: true do |t|
       t.string :name
-      t.money  :principal
-      t.money  :repaid
-      t.money  :npa
+      t.monetize  :principal
+      t.monetize  :repaid
+      t.monetize  :npa
     end
   end
 end
@@ -338,9 +338,9 @@ class CreateLoanWithCurrency < ActiveRecord::Migration
   def change
     create_table :loans, force: true do |t|
       t.string :name
-      t.money  :principal
-      t.money  :repaid
-      t.money  :npa
+      t.monetize  :principal
+      t.monetize  :repaid
+      t.monetize  :npa
       t.currency
     end
   end
