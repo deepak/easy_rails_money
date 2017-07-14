@@ -1,3 +1,3 @@
 module EasyRailsMoney
-  VERSION = "0.0.9.pre1"
+  VERSION = "0.1.0"
 end

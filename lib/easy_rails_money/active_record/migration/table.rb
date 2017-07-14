@@ -20,11 +20,11 @@ module EasyRailsMoney
         # @return is not important and can change
         #
         # @note If we have defined a currency column for a record then only the integer column is defined.
-        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#add_money
-        # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#money
+        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#add_monetize
+        # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#monetize
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#currency
-        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_money
-        def money(column_names, options={})
+        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_monetize
+        def monetize(column_names, options={})
           Array(column_names).each do |name|
             column "#{name}_money",    :integer, options
             column "#{name}_currency", :string,  options unless has_currency_column?
@@ -42,11 +42,11 @@ module EasyRailsMoney
         #
         # @note If we have defined a currency column for a record then currency column is removed only if no other money column are there
         #
-        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_money
-        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#add_money
+        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_monetize
+        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#add_monetize
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#currency
-        # @note multiple remove_money calls are not supported in one migration. because at this point the schema is different from the migration defined
-        def remove_money(*column_names)
+        # @note multiple remove_monetize calls are not supported in one migration. because at this point the schema is different from the migration defined
+        def remove_monetize(*column_names)
           column_names.each do |name|
             remove "#{name}_money"
             remove "#{name}_currency"
@@ -77,7 +77,7 @@ module EasyRailsMoney
         # column is prefixed by '_money' and the currency column by '_currency'
         #
         # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_currency
-        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_money
+        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_monetize
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#currency
         def remove_currency
           remove :currency
@@ -92,10 +92,10 @@ module EasyRailsMoney
             remove "#{money_column}_currency"
           end
         end
-                
+
         def columns
           # @base.schema_cache.clear_table_cache! @table_name
-          @base.schema_cache.columns[@table_name].map { |x| x.name }
+          @base.schema_cache.columns(@name).map { |x| x.name }
         end
 
         def has_currency_column?

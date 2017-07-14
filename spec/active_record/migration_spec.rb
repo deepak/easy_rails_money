@@ -6,7 +6,7 @@ describe "Migrating Money columns" do
 
   let(:schema_with_principal) do
     <<-EOF.strip_spaces
-  create_table "loans", :force => true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
     t.integer "principal_money"
     t.string  "principal_currency"
@@ -16,7 +16,7 @@ EOF
 
   let(:schema_with_principal_and_single_currency_column) do
     <<-EOF.strip_spaces
-  create_table "loans", :force => true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
     t.integer "principal_money"
     t.string  "currency"
@@ -26,7 +26,7 @@ EOF
 
   let(:schema_with_only_name) do
     <<-EOF.strip_spaces
-  create_table "loans", :force => true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
   end
 EOF
@@ -34,7 +34,7 @@ EOF
 
   let(:schema_with_single_currency_column) do
     <<-EOF.strip_spaces
-  create_table "loans", :force => true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
     t.integer "amount_funded_money"
     t.integer "principal_money"
@@ -46,7 +46,7 @@ EOF
 
   let(:schema_with_multiple_currency_columns) do
     <<-EOF.strip_spaces
-  create_table "loans", :force => true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
     t.string  "amount_funded_currency"
     t.integer "amount_funded_money"
@@ -60,27 +60,27 @@ EOF
 
   let(:schema_with_constraint) do
     <<-EOF.strip_spaces
-  create_table "loans", :force => true do |t|
+  create_table "loans", force: :cascade do |t|
     t.string  "name"
-    t.integer "principal_money", :null => false
-    t.string  "currency", :null => false
+    t.integer "principal_money", null: false
+    t.string  "currency", null: false
   end
 EOF
   end
-  
+
   context "and testing schema statements", :schema_statements do
     context "which have one currency column for each money column" do
       before(:each) do
         migrate SchemaStatements::CreateLoanAndMoney
       end
 
-      describe "#add_money" do
+      describe "#add_monetize" do
         it "creates two columns for each money attribute. one to store the lower denomination as an integer and the currency as a string" do
           expect(dump_schema).to eq schema_with_principal
         end
       end
 
-      describe "#remove_money" do
+      describe "#remove_monetize" do
         it "drops two columns for each money attribute. one which stored the lower denomination as an integer and the currency as a string" do
           expect { migrate SchemaStatements::RemovePrincipalFromLoan }.to change { dump_schema }.from(schema_with_principal).to(schema_with_only_name)
         end
@@ -92,13 +92,13 @@ EOF
         migrate SchemaStatements::CreateLoanWithCurrency
       end
 
-      describe "#add_money" do
+      describe "#add_monetize" do
         it "creates one column for each money attribute, to store the lower denomination as an integer. currency is stored in a common column" do
           expect(dump_schema).to eq schema_with_single_currency_column
         end
       end
 
-      describe "#remove_money" do
+      describe "#remove_monetize" do
         it "drops the money column for each money attribute and the common currency column as well", :fixme, :fixme_need_to_clear_table_cache do
           expect { migrate SchemaStatements::RemoveMoneyColumnsFromLoan }.to change { dump_schema }.from(schema_with_single_currency_column).to(schema_with_only_name)
         end
@@ -127,19 +127,19 @@ EOF
         expect { migrate CreateTableDefinition::CreateLoanWithConstraint }.to change { dump_schema }.from("").to(schema_with_constraint)
       end
     end
-    
+
     context "which have one currency column for each money column" do
       before(:each) do
         migrate CreateTableDefinition::CreateLoanAndMoney
       end
-      
+
       describe "#money" do
         it "creates two columns for each money attribute. one to store the lower denomination as an integer and the currency as a string" do
           expect(dump_schema).to eq schema_with_principal
         end
       end
 
-      describe "#remove_money" do
+      describe "#remove_monetize" do
         it "drops two columns for each money attribute. one which stored the lower denomination as an integer and the currency as a string" do
           expect { migrate ChangeTable::RemovePrincipalFromLoan }.to change { dump_schema }.from(schema_with_principal).to(schema_with_only_name)
         end
@@ -153,7 +153,7 @@ EOF
             migrate CreateTableDefinition::CreateLoanWithCurrency
             expect(dump_schema).to eq schema_with_single_currency_column
           end
-          
+
           it "creates money and common currency cilumns when currency column is specified first" do
             migrate CreateTableDefinition::CreateLoanWithCurrencySpecifiedFirst
             expect(dump_schema).to eq schema_with_single_currency_column
@@ -166,22 +166,22 @@ EOF
         end
       end
 
-      describe "#remove_money" do
+      describe "#remove_monetize" do
         before(:each) do
           migrate CreateTableDefinition::CreateLoanWithCurrency
         end
-        
+
         it "drops the money column for each money attribute and the common currency column as well" do
           expect { migrate ChangeTable::RemoveMoneyColumnsFromLoan }.to change { dump_schema }.from(schema_with_single_currency_column).to(schema_with_only_name)
         end
-        
+
         it "drops the money column for each money attribute but keeps the common currency column because some money columns still remain" do
           expect { migrate ChangeTable::RemoveMoneyColumnsExceptPrincipalFromLoan }.to change { dump_schema }.
             from(schema_with_single_currency_column).
             to(schema_with_principal_and_single_currency_column)
         end
       end
-      
+
       describe "#remove_currency" do
         it "drops the common currency column and adds a currency columns to each of the existing money columns" do
           migrate CreateTableDefinition::CreateLoanWithCurrency
@@ -201,5 +201,5 @@ EOF
     expect { migrate ChangeTable::AddPrincipalToLoan }.to change { dump_schema }.from(schema_with_only_name).to(schema_with_principal)
   end
 
-  pending "separate up and down migration methods. using add_money and remove_money"
+  pending "separate up and down migration methods. using add_monetize and remove_monetize"
 end # describe "Migrating Money columns"

@@ -34,11 +34,11 @@ module EasyRailsMoney
         # @return is not important and can change
         #
         # @note If we have defined a currency column for a record then only the integer column is defined.
-        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#add_money
-        # @see EasyRailsMoney::ActiveRecord::Migration::Table#money
+        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#add_monetize
+        # @see EasyRailsMoney::ActiveRecord::Migration::Table#monetize
         # @see EasyRailsMoney::ActiveRecord::Migration::TableDefinition#currency
-        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_money
-        def money(column_names, options={})
+        # @see EasyRailsMoney::ActiveRecord::Migration::SchemaStatements#remove_monetize
+        def monetize(column_names, options={})
           Array(column_names).each do |name|
             column "#{name}_money",      :integer, options
             unless columns.select { |x| x.name == "currency" }.any?
@@ -49,9 +49,10 @@ module EasyRailsMoney
 
         protected
         def remove_currency_columns
-          columns.delete_if { |x| x.name =~ /_currency/ }
+            columns.each do |x|
+                remove_column x.name if x.name =~ /_currency/
+            end
         end
-        
       end
     end
   end
