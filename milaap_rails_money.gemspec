@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'easy_rails_money/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "easy_rails_money"
+  gem.name          = "milaap_rails_money"
   gem.version       = EasyRailsMoney::VERSION
-  gem.authors       = ["Deepak Kannan"]
-  gem.email         = ["kannan.deepak@gmail.com"]
+  gem.authors       = ["Milaap Technology"]
+  gem.email         = ["tech@milaap.com"]
   gem.description   = "Integrate Rail's ActiveRecord gem and the money gem. Focus is on a simple code and API"
   gem.summary       = "Integrate Rail's ActiveRecord gem and the money gem"
-  gem.homepage      = "https://github.com/deepak/easy_rails_money"
+  gem.homepage      = "https://github.com/Milaap/easy_rails_money"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
