@@ -33,7 +33,7 @@ module EasyRailsMoney
     def bank
       @bank ||= lambda {
         bank = Money::Bank::VariableExchange.new
-        bank.import_rates(:json, self.exchange_rate)
+        bank.import_rates(:json, self.exchange_rate || "{}")
         bank
       }.call
     end
