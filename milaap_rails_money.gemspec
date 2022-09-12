@@ -17,23 +17,23 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib", "app/models"]
 
-  gem.add_dependency "money",         "~> 6.13.6"
+  gem.add_dependency "money",         ">= 6.13.6"
   gem.add_dependency "activesupport", ">= 4.2"
 
-  gem.add_development_dependency "rake",         "~> 10.0.4"
+  gem.add_development_dependency "rake",         ">= 10.0.4"
 
   # for running tests
-  gem.add_development_dependency "rspec",        "~> 2.12"
+  gem.add_development_dependency "rspec",        ">= 2.12"
   # we use an in-memory sqlite database for speed
-  gem.add_development_dependency "sqlite3",      "~> 1.3.7"
+  gem.add_development_dependency "sqlite3",      ">= 1.3.7"
   # testing against the ActiveRecord interface
   gem.add_development_dependency "activerecord", ">= 4.2"
 
   gem.add_development_dependency "pry-byebug"
-  gem.add_development_dependency "simplecov",    "~> 0.7.1"
+  gem.add_development_dependency "simplecov",    ">= 0.7.1"
 
   # for generating docs
-  gem.add_development_dependency "yard",         "~> 0.9.9"
+  gem.add_development_dependency "yard",         ">= 0.9.9"
   # needed by YARD to read markdown files
-  gem.add_development_dependency "redcarpet",    "~> 2.2.2"
+  gem.add_development_dependency "redcarpet",    ">= 2.2.2"
 end
